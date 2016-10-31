@@ -1,0 +1,121 @@
+[
+	{
+		"filename": "alleraller.mp3",
+		"effect": "BitCrusher",
+		"config": {
+			"bits": 4
+		}
+	},
+
+	{
+		"filename": "babycry.mp3",
+		"effect": "Freeverb",
+		"config": {
+			"dampening": 1000
+		}
+	},
+
+	{
+		"filename": "beep.mp3",
+		"effect": "Tremolo",
+		"config": {
+			"frequency": 2,
+			"depth": 0.75
+		}
+
+	},
+
+	{
+		"filename": "cuphit.m4a",
+		"effect": "Vibrato",
+		"config": {
+			"frequency": 20,
+			"depth": 0.1
+		}
+	},
+
+	{
+		"filename": "dog.mp3",
+		"effect": "Freeverb",
+		"config": {
+			"dampening": 1000
+		}
+	},
+
+	{
+		"filename": "doorsound.m4a",
+		"effect": "Chorus",
+		"config": {
+			"frequency": 4,
+			"delayTime": 2.5,
+			"depth": 0.5
+		}
+	},
+
+	{
+		"filename": "dryer.mp3",
+		"effect": "PitchShift",
+		"config": {
+			"pitch": 8,
+			"delayTime": 1.2,
+			"feedback": 0
+		}
+	},
+
+	{
+		"filename": "escalatorsound.m4a",
+		"effect": "AutoPanner",
+		"config": {
+			"frequency": "8n"
+		}
+	},
+
+	{
+		"filename": "escalatorsound.m4a",
+		"effect": "PitchShift",
+		"config": {
+			"frequency": -10
+		}
+	},
+
+	{
+		"filename": "frying.mp3",
+		"effect": "Chorus",
+		"config": {
+			"frequency": 440,
+			"delayTime": 2.5,
+			"depth": 0.5
+		}
+	},
+
+	{
+		"filename": "paper.mp3",
+		"effect": "AutoWah",
+		"config": {
+			"baseFrequency": 50,
+			"octaves": 6,
+			"sensitivity": -30
+		}
+	},
+
+	{
+		"filename": "rain.mp3",
+		"effect": "PingPongDelay",
+		"config": {
+			"delayTime": "10n",
+			"feedback": 0.2
+		}
+	},
+
+	{
+		"filename": "tingting.mp3",
+		"effect": "PitchShift",
+		"config": {
+			"pitch": 4,
+			"windowSize": 0.1,
+			"delayTime": 0.5,
+			"feedback": 0
+		}
+	}
+
+]
