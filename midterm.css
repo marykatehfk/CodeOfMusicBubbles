@@ -1,0 +1,18 @@
+.bubblecircle {
+	stroke: rgba(0,0,0,0.3);
+	stroke-width: 1;
+}
+
+.bubbletext {
+	font-family: 'Cormorant Garamond',courier,serif;
+	font-size: 35;
+	font-weight: 600;
+}
+
+.word {
+	fill: black;
+}
+
+.wordshadow {
+	fill: rgba(0,0,0,0.2);
+}

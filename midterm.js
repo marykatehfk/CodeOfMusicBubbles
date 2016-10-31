@@ -1,6 +1,197 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", init);
-function init() {
 
+var force;
+var manybodyforce;
+function init() {
+    // initialized the force simulation
+    var nodes = []
+    for (let i = 0; i < 200; i++) {
+    	nodes.push({type:"b", radius: randrange(3, 10), bounce:false})
+    }
+    for (let i = 0; i < 100; i++) {
+    	nodes.push({type:"b", radius: randrange(5, 20), bounce:false})
+    }
+    for (let i = 0; i < 20; i++) {
+    	nodes.push({type:"b", radius: randrange(10, 25), bounce:false})
+    }
+    nodes = shuffle(nodes)
+    var wordnodes = []
+    wordnodes.push({x:0, y:0, type:"w", radius: 35, text:"teapot", _id:"teapot", bounce:false});
+    wordnodes.push({type:"w", radius: 35, text:"pure", _id:"pure", bounce:false});
+    wordnodes.push({type:"w", radius: 35, text:"dog", _id:"dog", bounce:false});
+    wordnodes.push({type:"w", radius: 35, text:"closure", _id:"closure", bounce:false});
+    for (let i = 0; i < wordnodes.length; i++) {
+    	let width = getTextWidth(wordnodes[i].text, "35px Cormorant Garamond") / 2 + 1;
+    	wordnodes[i].radius =  width;
+    	wordnodes[i].offset = -width;
+    	nodes.push(wordnodes[i])
+    }
+
+
+
+    manybodyforce = d3.forceManyBody().strength(function(d,i){
+    			  	return 0;
+    			  });
+
+    force = d3.forceSimulation(nodes)
+    			  .force("gravity", d3.forceManyBody().strength(0.5))
+    			  .force("charge", manybodyforce)
+    			  .force("collide", d3.forceCollide()
+    			  				      .radius(function(d) { 
+					    			  	return d.radius + 0.5; 
+					    			  })
+					    			  .iterations(4))
+    			  .force("boundingX", d3.forceX().strength(0.01))
+    			  .force("boundingY", d3.forceY().strength(0.01))
+    			  .on("tick", function(){doTick(nodes);})
+    			  .alphaMin(0)
+    			  .alphaDecay(0)
+    			  .alpha(0.6)
+    			  .restart();
+
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
+	d3.select("svg")
+	  .append("g")
+	    .attr("transform", "translate(400, 400)")
+	  .selectAll("circle").data(nodes).enter()
+	  	.append("g")
+	  	.classed("bubble", true)
+	  	.each(function(d,i){
+	  		let selection = d3.select(this);
+	  		selection.attr("transform", "translate(" + d.x + "," + d.y + ")");
+	        selection.append("circle")
+	        		 .classed("bubblecircle", "true")
+			         .attr("cx", 0)
+			         .attr("cy", 0)
+			         .attr("r",  d.radius)
+			         .style("fill", rgbaFromHex(color(i%4), 0.85));
+	        if (d.type == "w") {
+	        	selection.select("circle")
+	        			 .style("fill", rgbaFromHex(color(i%4+4), 0.85));
+
+	        	selection.append("text")
+					     .classed("wordshadow", true)
+					     .classed("bubbletext", true)
+					     .attr("id", d._id + "_shadow")
+					     .attr("x", d.offset)
+					     .attr("y", 35/4)
+					     .attr("transform", "skewX(0)")
+					     .text(d.text);
+
+	        	selection.append("text")
+					     .classed("word", true)
+					     .classed("bubbletext", true)
+					     .attr("id", d._id)
+					     .attr("x", d.offset)
+					     .attr("y", 35/4)
+					     .attr("transform", "skewX(0)")
+					     .text(d.text)
+					     .on("mouseover", mouseover)
+					     .on("click", doBounce);
+	        }
+	  	})
+
+}
+
+// Fisher-Yates shuffle
+// code from http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
+function shuffle(array) {
+    let counter = array.length;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        let index = Math.floor(Math.random() * counter);
+
+        // Decrease counter by 1
+        counter--;
+
+        // And swap the last element with it
+        let temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
+}
+
+/**
+ * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
+ * 
+ * @param {String} text The text to be rendered.
+ * @param {String} font The css font descriptor that text is to be rendered with (e.g. "bold 14px verdana").
+ * 
+ * @see http://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
+ */
+function getTextWidth (text, font) {
+	// re-use canvas object for better performance
+	var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+	var context = canvas.getContext("2d");
+	context.font = font;
+	var metrics = context.measureText(text);
+	return metrics.width;
+};
+
+function rgbaFromHex(hex, a) {
+	let r = parseInt(hex.slice(1, 3), 16)
+	let g = parseInt(hex.slice(3, 5), 16)
+	let b = parseInt(hex.slice(5, 7), 16)
+	return "rgba(" + r + "," + g + "," + b + "," + a + ")"
+}
+
+function randrange(a, b) {
+	return Math.random() * (b - a) + a;
+}
+
+function doTick(nodes) {
+	d3.select("svg")
+	  .selectAll(".bubble").data(nodes).each(function(d,i){
+	  	 var sel = d3.select(this);
+	     sel.attr("transform", "translate(" + d.x + "," + d.y + ")")
+	  })
+
+
+	manybodyforce.strength(function(d,i){
+		if (d.type == "w") {
+			if (d.bounce) return -1000;
+			return 0.1;
+		}
+		return 0;
+	});
+}
+
+function doBounce(d, i){
+	d.bounce = true;
+	setTimeout(function(){
+		d.bounce = false;
+	}, 500);
+}
+
+function sincurve(x) {
+	return Math.sin(x * 20 * Math.PI);
+}
+
+function mouseover(d) {
+	d3.select(this)
+	  .transition()
+	  .ease(d3.easeCubicInOut)
+	  .duration(1000)
+	  .tween("wobble", function(){
+	  	var node = this;
+	  	return function(t) {
+	  		node.setAttribute("transform", "skewX(" +(0.5*sincurve(t)) + ")");
+	  	}
+	  });
+    d3.select("#" + d._id)
+	  .transition()
+	  .ease(d3.easeCubicInOut)
+	  .duration(1000)
+	  .tween("wobble", function(){
+	  	var node = this;
+	  	return function(t) {
+	  		node.setAttribute("transform", "skewX(" +(-0.5*sincurve(t)) + ")");
+	  	}
+	  });
 }
