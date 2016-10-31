@@ -24,7 +24,7 @@ function init() {
     wordnodes.push({type:"w", radius: 35, text:"dog", _id:"dog", bounce:false});
     wordnodes.push({type:"w", radius: 35, text:"closure", _id:"closure", bounce:false});
     for (let i = 0; i < wordnodes.length; i++) {
-    	let width = getTextWidth(wordnodes[i].text, "30px Cormorant Garamond") / 2 + 1;
+    	let width = getTextWidth(wordnodes[i].text, "30px Century Gothic") / 2 + 1;
     	wordnodes[i].radius =  width;
     	wordnodes[i].offset = -width;
     	nodes.push(wordnodes[i])
@@ -123,63 +123,89 @@ function init() {
 			
 			player.connect(effect);
 			effect.toMaster();
-			soundeffects[soundname + "_mod"] = player;
+			soundeffects[soundname + "_mod"] = {p:player, data:sound};
 			let player2 = new Tone.Player(filename);
-			soundeffects[soundname] = player2;
+			player2.toMaster();
+			soundeffects[soundname] = {p:player2, data:sound};
 		}
+
+		var synth = new Tone.PolySynth(
+			 {"oscillator":{
+			 "type":"triangle"
+			 },
+			 "envelope":{
+			 	"attack": 0.1,
+		        "decay": 0.5,
+			    "sustain": 0.5,
+			    "release": 0.01
+			 }
+		});
+
+		synth.toMaster();
+		 
+		  
+		var pattern = new Tone.Pattern(function(time, note){
+			synth.triggerAttackRelease(note, 0.50);
+		}, ["E3", "A3", "C4", "E4", "A4", "E4", "C4", "A3"]);
+
+		pattern.start(1);
+		Tone.Transport.bpm.value = 200;
+
+
+		var kitPart = new Tone.Part(function(time, value){
+			let soundeffect = soundeffects[value];
+			soundeffect.p.start(time);
+			d3.select("#" + soundeffect.data.word).call(mouseover);
+		},  [
+				["0:0:2", "babycry"],
+				//["0:0:10", "dog"],
+				["0:2:3", "escalatorsound1"],
+
+
+				["0:4:0", "babycry"],
+				["0:5:3", "babycry"],
+				["5:0:0", "babycry"],
+				["5:0:1", "tingting"],
+				["5:0:2", "tingting"],
+				["5:1:2", "tingting"],
+
+				["7:0:3", "dog"],
+
+				["9:0:0", "tingting_mod"],
+				["9:0:0", "paper"],
+			    ["9:0:3", "paper"],
+			    ["9:1:2", "paper_mod"],
+			    ["9:1:3", "tingting"],
+			          
+			    ["10:4:0", "cuphit"],
+			    ["13:0:0", "dryer"],
+			    ["13:0:0", "babycry"],
+			    ["13:0:1", "tingting"],
+		            
+		        ["17:3:0", "alleraller"],
+		            
+		        ["18:1:1", "beep"],
+		        ["19:02:02", "frying_mod"],
+		        ["19:02:03", "frying_mod"],
+		        ["19:03:03", "frying_mod"],
+		        ["19:03:03", "alleraller_mod"],
+
+		        ["21:00:03", "escalatorsound2"],
+		        ["23:03:03", "alleraller_mod"],
+
+		        ["26:03:03", "dryer"],
+
+		        ["30:00:01", "doorsound"],
+
+		        ["35:00:00", "babycry"],
+		        ["35:03:00", "rain"]
+		        
+		]);
+
+		kitPart.start(1);
+		//kitPart.loop = true;
+		Tone.Transport.start(1);  	
 	});
-
-	var synth = new Tone.SimpleSynth(
-		 {"oscillator":{
-		 "type":"triangle"
-		 },
-		 "envelope":{
-		 "attack": 0.001,
-		       "decay": 0.001,
-		       "sustain": 0.5,
-		       "release": 0.001
-		 }
-	});
-
-	synth.toMaster();
-	 
-	  
-	  var pattern = new Tone.Pattern(function(time, note){
-	      synth.triggerAttackRelease(note, 0.50);
-	  }, ["E3", "A3", "C4", "E4", "A4", "E4", "C4", "A3"]);
-	  
-	  pattern.start(0);
-	  Tone.Transport.bpm.value = 200;
-	  Tone.Transport.start();
-
-
-	  var kitPart = new Tone.Part(function(time, value){
-	  	soundeffects[value].start(time);
-	   
-	    },  [
-	          ["0:0:2", "babycry"],
-	          //["0:0:10", "dog"],
-	          ["0:2:3", "escalator"],
-	          
-	          
-	          ["0:4:0", "babycry"],
-	          ["0:5:3", "babycry"],
-	          ["5:0:0", "babycry"],
-	          ["5:0:", "tingting"],
-	          ["5:0:2", "tingting"],
-	          ["5:1:2", "tingting"],
-	         
-	          ["7:0:3", "dog"],
-	          
-	          ["9:0:0", "tingting_mod"]
-	         
-	      
-	          
-	        ]);
-	        
-	  kitPart.start(5);
-	  //kitPart.loop = true;
-	  Tone.Transport.start();  	
 }
 
 // Fisher-Yates shuffle

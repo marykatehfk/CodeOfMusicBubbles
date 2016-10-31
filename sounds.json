@@ -1,6 +1,7 @@
 [
 	{
 		"name": "alleraller",
+		"word": "words",
 		"filename": "alleraller.mp3",
 		"effect": "BitCrusher",
 		"config": {
@@ -10,6 +11,7 @@
 
 	{
 		"name": "babycry",
+		"word": "fear",
 		"filename": "babycry.mp3",
 		"effect": "Freeverb",
 		"config": {
@@ -19,6 +21,7 @@
 
 	{
 		"name": "beep",
+		"word": "tiny",
 		"filename": "beep.mp3",
 		"effect": "Tremolo",
 		"config": {
@@ -30,6 +33,7 @@
 
 	{
 		"name": "cuphit",
+		"word": "drop",
 		"filename": "cuphit.m4a",
 		"effect": "Vibrato",
 		"config": {
@@ -40,6 +44,7 @@
 
 	{
 		"name": "dog",
+		"word": "cat",
 		"filename": "dog.mp3",
 		"effect": "Freeverb",
 		"config": {
@@ -49,6 +54,7 @@
 
 	{
 		"name": "doorsound",
+		"word": "heavy",
 		"filename": "doorsound.m4a",
 		"effect": "Chorus",
 		"config": {
@@ -60,6 +66,7 @@
 
 	{
 		"name": "dryer",
+		"word": "hot",
 		"filename": "dryer.mp3",
 		"effect": "PitchShift",
 		"config": {
@@ -71,6 +78,7 @@
 
 	{
 		"name": "escalatorsound1",
+		"word": "rising",
 		"filename": "escalatorsound.m4a",
 		"effect": "AutoPanner",
 		"config": {
@@ -80,6 +88,7 @@
 
 	{
 		"name": "escalatorsound2",
+		"word": "up",
 		"filename": "escalatorsound.m4a",
 		"effect": "PitchShift",
 		"config": {
@@ -89,6 +98,7 @@
 
 	{
 		"name": "frying",
+		"word": "tangy",
 		"filename": "frying.mp3",
 		"effect": "Chorus",
 		"config": {
@@ -100,6 +110,7 @@
 
 	{
 		"name": "paper",
+		"word": "cut",
 		"filename": "paper.mp3",
 		"effect": "AutoWah",
 		"config": {
@@ -111,6 +122,7 @@
 
 	{
 		"name": "rain",
+		"word": "flow",
 		"filename": "rain.mp3",
 		"effect": "PingPongDelay",
 		"config": {
@@ -121,6 +133,7 @@
 
 	{
 		"name": "tingting",
+		"word": "teapot",
 		"filename": "tingting.mp3",
 		"effect": "PitchShift",
 		"config": {
